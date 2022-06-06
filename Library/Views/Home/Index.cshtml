@@ -1,8 +1,50 @@
-﻿@{
+﻿@model IEnumerable<Library.Models.ViewModels.BookViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">List of books</h1>
+    <table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @if (item.BorrowerUserId == null) 
+            {  
+                @Html.ActionLink("Borrow", "BorrowBookById", new { bookId=item.Id, userId=1 }) 
+            }            
+            else if (item.BorrowerUserId == 1) 
+            {  
+                @Html.ActionLink("Return", "ReturnBookById", new { bookId=item.Id, userId=1 }) 
+            }
+            else
+            {
+                <span>Borrowed by:</span>
+                @Html.DisplayFor(modelItem => item.BorrowerName)
+                <span> </span>
+                @Html.DisplayFor(modelItem => item.BorrowerSurname)
+            }
+            |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) 
+            |
+        </td>
+    </tr>
+}
 </div>
