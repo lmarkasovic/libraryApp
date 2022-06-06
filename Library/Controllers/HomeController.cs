@@ -47,11 +47,12 @@ namespace Library.Controllers
                 }
 
                 _context.Catalog.Where(a => a.Id == "bk111").FirstOrDefault().BorrowerUserId = 2;
+                _context.Catalog.Where(a => a.Id == "bk108").FirstOrDefault().BorrowerUserId = 2;
                 User user = new User
                 {
                     Id = 2,
-                    Name = "Test",
-                    Surname = "Testić"
+                    Name = "John",
+                    Surname = "Smith"
                 };
                 _context.Users.Add(user);
                 _context.SaveChanges();
@@ -70,7 +71,7 @@ namespace Library.Controllers
                     Author = item.Author,
                     BorrowerUserId=item.BorrowerUserId,
                     BorrowerName = _context.Users.Where(a => a.Id == item.BorrowerUserId).Select(x => x.Name).FirstOrDefault(),
-                    BorrowerSurname = _context.Users.Where(a => a.Id == item.BorrowerUserId).Select(x => x.Name).FirstOrDefault()
+                    BorrowerSurname = _context.Users.Where(a => a.Id == item.BorrowerUserId).Select(x => x.Surname).FirstOrDefault()
                 };
 
                 books.Add(book);
@@ -90,7 +91,7 @@ namespace Library.Controllers
             if (BookId == null)
                 return BadRequest();
 
-            Book book = _context.Catalog.Where(a => a.Id == BookId).FirstOrDefault();
+            Book book = _context.Catalog.Where(a => a.Id == BookId && a.BorrowerUserId == null).FirstOrDefault();
             if (book == null)
                 return NotFound();
 
@@ -100,12 +101,12 @@ namespace Library.Controllers
         }
 
         //[HttpPut]
-        public IActionResult ReturnBookById(string BookId)
+        public IActionResult ReturnBookById(string BookId, int userId)
         {
             if (BookId == null)
                 return BadRequest();
 
-            Book book = _context.Catalog.Where(a => a.Id == BookId && a.BorrowerUserId!=null).FirstOrDefault();
+            Book book = _context.Catalog.Where(a => a.Id == BookId && a.BorrowerUserId == userId).FirstOrDefault();
             if (book == null)
                 return NotFound();
 
