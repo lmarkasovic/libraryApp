@@ -12,6 +12,9 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<DbInitializer>();
+
+
 
 var app = builder.Build();
 
@@ -24,6 +27,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.Seed();
 app.UseStaticFiles();
 
 app.UseRouting();

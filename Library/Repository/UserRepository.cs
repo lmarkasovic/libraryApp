@@ -10,8 +10,6 @@ namespace Library.Repository
         public UserRepository(LibraryContext context)
         {
             _context = context;
-
-            //_context.SaveChanges();
         }
 
         public async Task<User> GetUserDetails(int id)
