@@ -1,6 +1,7 @@
 ﻿using Library.DAL;
 using Library.Models;
 using Library.Models.ViewModels;
+using Library.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Xml.Linq;
@@ -9,74 +10,16 @@ namespace Library.Controllers
 {
     public class HomeController : Controller
     {
-        private LibraryContext _context;
-        private readonly ILogger<HomeController> _logger;
+        private readonly IBookService _bookService;
 
-        public HomeController(LibraryContext context, ILogger<HomeController> logger)
+        public HomeController(IBookService bookService)
         {
-            _context = context;
-            _logger = logger;
-            if (!_context.Catalog.Any())
-            {
-                var result = from e in XDocument.Load("books.xml").Descendants("book")
-                             select new
-                             {
-                                 Id = e.Attribute("id").Value,
-                                 Author = e.Element("author").Value,
-                                 Title = e.Element("title").Value,
-                                 Genre = e.Element("genre").Value,
-                                 Price = e.Element("price").Value,
-                                 PublishDate = e.Element("publish_date").Value,
-                                 Description = e.Element("description").Value
-                             };
-                foreach (var item in result)
-                {
-                     Book book = new Book 
-                     { 
-                         Id = item.Id,
-                         Author = item.Author,
-                         Title = item.Title,
-                         Genre = item.Genre,
-                         Price = item.Price,
-                         PublishDate = item.PublishDate,
-                         Description = item.Description
-                     };
-
-                    _context.Catalog.Add(book);
-                    _context.SaveChanges();
-                }
-
-                _context.Catalog.Where(a => a.Id == "bk111").FirstOrDefault().BorrowerUserId = 2;
-                _context.Catalog.Where(a => a.Id == "bk108").FirstOrDefault().BorrowerUserId = 2;
-                User user = new User
-                {
-                    Id = 2,
-                    Name = "John",
-                    Surname = "Smith"
-                };
-                _context.Users.Add(user);
-                _context.SaveChanges();
-            }
+            _bookService = bookService;
         }
 
         public IActionResult Index()
         {
-            var books = new List<BookViewModel>();
-            foreach (var item in _context.Catalog)
-            {
-                BookViewModel book = new BookViewModel
-                {
-                    Id = item.Id,
-                    Title = item.Title,
-                    Author = item.Author,
-                    BorrowerUserId=item.BorrowerUserId,
-                    BorrowerName = _context.Users.Where(a => a.Id == item.BorrowerUserId).Select(x => x.Name).FirstOrDefault(),
-                    BorrowerSurname = _context.Users.Where(a => a.Id == item.BorrowerUserId).Select(x => x.Surname).FirstOrDefault()
-                };
-
-                books.Add(book);
-            }
-            return View(books);
+            return View(_bookService.GetBooks());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -86,39 +29,41 @@ namespace Library.Controllers
         }
 
         //[HttpPut]
-        public IActionResult BorrowBookById(string BookId, int userId)
+        public IActionResult BorrowBook(string BookId, int userId)
         {
             if (BookId == null)
                 return BadRequest();
 
-            Book book = _context.Catalog.Where(a => a.Id == BookId && a.BorrowerUserId == null).FirstOrDefault();
-            if (book == null)
-                return NotFound();
-
-            book.BorrowerUserId = userId;
-            _context.SaveChanges();
-            return new NoContentResult();
+            _bookService.BorrowBook(BookId, userId);
+            return RedirectToAction("Index");
         }
 
-        //[HttpPut]
-        public IActionResult ReturnBookById(string BookId, int userId)
+        public IActionResult ReturnBook(string BookId, int userId)
         {
             if (BookId == null)
                 return BadRequest();
 
-            Book book = _context.Catalog.Where(a => a.Id == BookId && a.BorrowerUserId == userId).FirstOrDefault();
-            if (book == null)
-                return NotFound();
-
-            book.BorrowerUserId = null;
-            _context.SaveChanges();
-            return new NoContentResult();
+            _bookService.ReturnBook(BookId, userId);
+            return RedirectToAction("Index");
         }
 
-        public string GetUserById (int id)
-        {
-            User user = _context.Users.Where(a => a.Id == id).FirstOrDefault();
-            return user.Name.ToString() + user.Surname.ToString();
-        }
+        //public IActionResult GetBookDetails(string BookId)
+        //{
+        //    var book = _context.Catalog.Where(a => a.Id == BookId).FirstOrDefault();
+        //    BookDetailsViewModel result = new BookDetailsViewModel
+        //    {
+        //        Title = book.Title,
+        //        Author = book.Author,
+        //        Genre = book.Genre,
+        //        Price = book.Price,
+        //        PublishDate = book.PublishDate,
+        //        Description = book.Description,
+        //        BorrowerName = _context.Users.Where(a => a.Id == book.BorrowerUserId).Select(x => x.Name).FirstOrDefault(),
+        //        BorrowerSurname = _context.Users.Where(a => a.Id == book.BorrowerUserId).Select(x => x.Surname).FirstOrDefault()
+        //    };
+        //    return View("Details", result);
+        //}
+
+
     }
 }
