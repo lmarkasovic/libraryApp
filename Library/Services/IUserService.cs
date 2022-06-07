@@ -4,6 +4,6 @@ namespace Library.Services
 {
     public interface IUserService
     {
-        UserViewModel GetUserDetails(int id);
+        Task<UserViewModel> GetUserDetails(int id);
     }
 }

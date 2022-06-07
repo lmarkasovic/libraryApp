@@ -12,9 +12,9 @@ namespace Library.Services
             _userRepo = userRepo;
         }
 
-        public UserViewModel GetUserDetails(int id)
+        public async Task<UserViewModel> GetUserDetails(int id)
         {
-            var user = _userRepo.GetUserDetails(id);
+            var user = await _userRepo.GetUserDetails(id);
             var result = new UserViewModel()
             {
                 Name = user.Name,

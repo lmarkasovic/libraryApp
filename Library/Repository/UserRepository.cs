@@ -14,7 +14,7 @@ namespace Library.Repository
             //_context.SaveChanges();
         }
 
-        public User GetUserDetails(int id)
+        public async Task<User> GetUserDetails(int id)
         {
             var user = new User()
             {

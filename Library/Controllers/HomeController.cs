@@ -19,9 +19,9 @@ namespace Library.Controllers
             _userService = userService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View(_bookService.GetBooks());
+            return View(await _bookService.GetBooks());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -31,33 +31,33 @@ namespace Library.Controllers
         }
 
         //[HttpPut]
-        public IActionResult BorrowBook(string bookId, int userId)
+        public async Task<IActionResult> BorrowBook(string bookId, int userId)
         {
             if (bookId == null)
                 return BadRequest();
 
-            _bookService.BorrowBook(bookId, userId);
+            await _bookService.BorrowBook(bookId, userId);
             return RedirectToAction("Index");
         }
 
-        public IActionResult ReturnBook(string bookId, int userId)
+        public async Task<IActionResult> ReturnBook(string bookId, int userId)
         {
             if (bookId == null)
                 return BadRequest();
 
-            _bookService.ReturnBook(bookId, userId);
+            await _bookService.ReturnBook(bookId, userId);
             return RedirectToAction("Index");
         }
 
-        public IActionResult GetBookDetails(string bookId)
+        public async Task<IActionResult> GetBookDetails(string bookId)
         {
-            var result = _bookService.GetBookDetails(bookId);
+            var result = await _bookService.GetBookDetails(bookId);
             return View("Details", result);
         }
 
-        public UserViewModel GetCurrentUser(int id)
+        public async Task<UserViewModel> GetCurrentUser(int id)
         {
-            return _userService.GetUserDetails(id);
+            return await _userService.GetUserDetails(id);
         }
     }
 }

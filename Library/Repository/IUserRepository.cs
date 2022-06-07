@@ -4,6 +4,6 @@ namespace Library.Repository
 {
     public interface IUserRepository
     {
-        User GetUserDetails(int id);
+        Task<User> GetUserDetails(int id);
     }
 }

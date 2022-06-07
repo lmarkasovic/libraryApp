@@ -4,9 +4,9 @@ namespace Library.Services
 {
     public interface IBookService
     {
-        IEnumerable<BookViewModel> GetBooks();
-        void BorrowBook(string bookId, int userId);
-        void ReturnBook(string bookId, int userId);
-        BookDetailsViewModel GetBookDetails(string bookId);
+        Task<IEnumerable<BookViewModel>> GetBooks();
+        Task BorrowBook(string bookId, int userId);
+        Task ReturnBook(string bookId, int userId);
+        Task<BookDetailsViewModel> GetBookDetails(string bookId);
     }
 }

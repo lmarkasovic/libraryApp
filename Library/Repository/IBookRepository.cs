@@ -4,9 +4,9 @@ namespace Library.Repository
 {
     public interface IBookRepository
     {
-        IEnumerable<Book> GetAllBooks();
-        Book GetBookById(string id);
-        Book SaveBook(Book book);
+        Task<IEnumerable<Book>> GetAllBooks();
+        Task<Book> GetBookById(string id);
+        Task<Book> SaveBook(Book book);
 
     }
 }
