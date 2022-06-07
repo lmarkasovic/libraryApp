@@ -1,5 +1,3 @@
-using System.Xml.Serialization;
-
 namespace Library.Models
 {
     public class Book

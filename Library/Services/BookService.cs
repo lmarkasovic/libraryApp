@@ -36,18 +36,33 @@ namespace Library.Services
             return result;
         }
 
-        public void BorrowBook(string BookId, int userId)
+        public void BorrowBook(string bookId, int userId)
         {
-            var book = _bookRepo.GetBookById(BookId);
+            var book = _bookRepo.GetBookById(bookId);
             book.BorrowerUserId = userId;          
             _bookRepo.SaveBook(book);
         }
 
-        public void ReturnBook(string BookId, int userId)
+        public void ReturnBook(string bookId, int userId)
         {
-            var book = _bookRepo.GetBookById(BookId);
+            var book = _bookRepo.GetBookById(bookId);
             book.BorrowerUserId = null;
             _bookRepo.SaveBook(book);
+        }
+
+        public BookDetailsViewModel GetBookDetails(string bookId)
+        {
+            var book = _bookRepo.GetBookById(bookId);
+            var result = new BookDetailsViewModel
+            {
+                Author = book.Author,
+                Title = book.Title,
+                Genre = book.Genre,
+                Price = book.Price,
+                PublishDate = book.PublishDate,
+                Description = book.Description
+            };
+            return result;
         }
     }
 }
