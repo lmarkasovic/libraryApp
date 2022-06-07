@@ -51,29 +51,14 @@ namespace Library.Controllers
         public async Task<IActionResult> GetBookDetails(string bookId)
         {
             var book = await _bookService.GetBookDetails(bookId);
-            var result = new BookDetailsViewModel()
-            {
-                Author = book.Author,
-                Title = book.Title,
-                Genre = book.Genre,
-                Price = book.Price,
-                PublishDate = book.PublishDate,
-                Description = book.Description,
-                Name = book.Name,
-                Surname = book.Surname,
-                BorrowedUntil = book.BorrowedUntil
-            };
+            var result = BookDetailsViewModel.FromDTO(book);
             return View("Details", result);
         }
 
         public async Task<UserViewModel> GetCurrentUser(int id)
         {
             var user = await _userService.GetUserDetails(id);
-            var result = new UserViewModel()
-            {
-                Name = user.Name,
-                Surname = user.Surname
-            };
+            var result = UserViewModel.FromDTO(user);
             return result;               
         }
     }
