@@ -1,5 +1,4 @@
-﻿using Library.Models;
-using Library.Models.ViewModels;
+﻿using Library.Models.DTO;
 using Library.Repository;
 
 namespace Library.Services
@@ -14,23 +13,23 @@ namespace Library.Services
             _userRepo = userRepo;
         }
 
-        public async Task<IEnumerable<BookViewModel>> GetBooks()
+        public async Task<IEnumerable<BookDTO>> GetBooks()
         {
             var books = await _bookRepo.GetAllBooks();
-            var result = new List<BookViewModel>();
+            var result = new List<BookDTO>();
             foreach (var b in books)
             {
-                UserViewModel nameSurname = new UserViewModel();
+                UserDTO nameSurname = new UserDTO();
                 if (b.BorrowerUserId != null)
                 {
                     var userDetails = await _userRepo.GetUserDetails(b.BorrowerUserId.Value);
-                    nameSurname = new UserViewModel()
+                    nameSurname = new UserDTO()
                     {
                         Name = userDetails.Name,
                         Surname = userDetails.Surname
                     };
                 }
-                BookViewModel book = new BookViewModel
+                BookDTO book = new BookDTO
                 {
                     Id = b.Id,
                     Title = b.Title,
@@ -48,7 +47,7 @@ namespace Library.Services
             var book = await _bookRepo.GetBookById(bookId);
             book.BorrowerUserId = userId;
             book.BorrowedUntil = DateTime.Now.AddDays(14);
-            _bookRepo.SaveBook(book);
+            await _bookRepo.SaveBook(book);
         }
 
         public async Task ReturnBook(string bookId, int userId)
@@ -56,25 +55,25 @@ namespace Library.Services
             var book = await _bookRepo.GetBookById(bookId);
             book.BorrowerUserId = null;
             book.BorrowedUntil = null;
-            _bookRepo.SaveBook(book);
+            await _bookRepo.SaveBook(book);
         }
 
-        public async Task<BookDetailsViewModel> GetBookDetails(string bookId)
+        public async Task<BookDetailsDTO> GetBookDetails(string bookId)
         {
             var book = await _bookRepo.GetBookById(bookId);
 
-            UserViewModel nameSurname = new UserViewModel();
+            UserDTO nameSurname = new UserDTO();
             if (book.BorrowerUserId != null)
             {
                 var user = await _userRepo.GetUserDetails(book.BorrowerUserId.Value);
-                nameSurname = new UserViewModel()
+                nameSurname = new UserDTO()
                 {
                     Name = user.Name,
                     Surname = user.Surname
                 };
             }
 
-            var result = new BookDetailsViewModel
+            var result = new BookDetailsDTO
             {
                 Author = book.Author,
                 Title = book.Title,

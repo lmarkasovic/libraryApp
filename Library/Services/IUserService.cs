@@ -1,9 +1,9 @@
-﻿using Library.Models.ViewModels;
+﻿using Library.Models.DTO;
 
 namespace Library.Services
 {
     public interface IUserService
     {
-        Task<UserViewModel> GetUserDetails(int id);
+        Task<UserDTO> GetUserDetails(int id);
     }
 }

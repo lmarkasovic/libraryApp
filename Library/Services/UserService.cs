@@ -1,5 +1,4 @@
-﻿using Library.Models;
-using Library.Models.ViewModels;
+﻿using Library.Models.DTO;
 using Library.Repository;
 
 namespace Library.Services
@@ -12,10 +11,10 @@ namespace Library.Services
             _userRepo = userRepo;
         }
 
-        public async Task<UserViewModel> GetUserDetails(int id)
+        public async Task<UserDTO> GetUserDetails(int id)
         {
             var user = await _userRepo.GetUserDetails(id);
-            var result = new UserViewModel()
+            var result = new UserDTO()
             {
                 Name = user.Name,
                 Surname = user.Surname

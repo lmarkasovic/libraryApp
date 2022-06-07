@@ -15,5 +15,21 @@ namespace Library.Models.ViewModels
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? BorrowedUntil { get; set; }
 
+        internal static BookDetailsViewModel FromDTO(Library.Models.DTO.BookDetailsDTO book)
+        {
+            return new BookDetailsViewModel
+            {
+                Author = book.Author,
+                Title = book.Title,
+                Genre = book.Genre,
+                Price = book.Price,
+                PublishDate = book.PublishDate,
+                Description = book.Description,
+                Name = book.Name,
+                Surname = book.Surname,
+                BorrowedUntil = book.BorrowedUntil
+            };
+        }
+
     }
 }

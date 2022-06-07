@@ -1,10 +1,8 @@
-﻿using Library.DAL;
-using Library.Models;
+﻿using Library.Models;
 using Library.Models.ViewModels;
 using Library.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Xml.Linq;
 
 namespace Library.Controllers
 {
@@ -21,7 +19,8 @@ namespace Library.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            return View(await _bookService.GetBooks());
+            var books = await _bookService.GetBooks();            
+            return View(books.Select(BookViewModel.FromDTO).ToList());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -51,13 +50,31 @@ namespace Library.Controllers
 
         public async Task<IActionResult> GetBookDetails(string bookId)
         {
-            var result = await _bookService.GetBookDetails(bookId);
+            var book = await _bookService.GetBookDetails(bookId);
+            var result = new BookDetailsViewModel()
+            {
+                Author = book.Author,
+                Title = book.Title,
+                Genre = book.Genre,
+                Price = book.Price,
+                PublishDate = book.PublishDate,
+                Description = book.Description,
+                Name = book.Name,
+                Surname = book.Surname,
+                BorrowedUntil = book.BorrowedUntil
+            };
             return View("Details", result);
         }
 
         public async Task<UserViewModel> GetCurrentUser(int id)
         {
-            return await _userService.GetUserDetails(id);
+            var user = await _userService.GetUserDetails(id);
+            var result = new UserViewModel()
+            {
+                Name = user.Name,
+                Surname = user.Surname
+            };
+            return result;               
         }
     }
 }
