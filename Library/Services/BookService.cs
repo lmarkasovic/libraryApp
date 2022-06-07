@@ -7,9 +7,11 @@ namespace Library.Services
     public class BookService: IBookService
     {
         private readonly IBookRepository _bookRepo;
-        public BookService(IBookRepository bookRepo)
+        private readonly IUserRepository _userRepo;
+        public BookService(IBookRepository bookRepo, IUserRepository userRepo)
         {
             _bookRepo = bookRepo;
+            _userRepo = userRepo;
         }
 
         public IEnumerable<BookViewModel> GetBooks()
@@ -18,10 +20,15 @@ namespace Library.Services
             var result = new List<BookViewModel>();
             foreach (var b in books)
             {
-                string nameSurname = null;
+                UserViewModel nameSurname = new UserViewModel();
                 if (b.BorrowerUserId != null)
                 {
-                    nameSurname = _bookRepo.GetBorrowerDetails(b.BorrowerUserId.Value);
+                    var userDetails = _userRepo.GetUserDetails(b.BorrowerUserId.Value);
+                    nameSurname = new UserViewModel()
+                    {
+                        Name = userDetails.Name,
+                        Surname = userDetails.Surname
+                    };
                 }
                 BookViewModel book = new BookViewModel
                 {
@@ -29,7 +36,7 @@ namespace Library.Services
                     Title = b.Title,
                     Author = b.Author,
                     BorrowerUserId = b.BorrowerUserId,
-                    BorrowerNameSurname = nameSurname
+                    BorrowerNameSurname = nameSurname.Name + ' ' + nameSurname.Surname
                 };
                 result.Add(book);
             }
@@ -53,6 +60,18 @@ namespace Library.Services
         public BookDetailsViewModel GetBookDetails(string bookId)
         {
             var book = _bookRepo.GetBookById(bookId);
+
+            UserViewModel nameSurname = new UserViewModel();
+            if (book.BorrowerUserId != null)
+            {
+                var user = _userRepo.GetUserDetails(book.BorrowerUserId.Value);
+                nameSurname = new UserViewModel()
+                {
+                    Name = user.Name,
+                    Surname = user.Surname
+                };
+            }
+
             var result = new BookDetailsViewModel
             {
                 Author = book.Author,
@@ -60,7 +79,9 @@ namespace Library.Services
                 Genre = book.Genre,
                 Price = book.Price,
                 PublishDate = book.PublishDate,
-                Description = book.Description
+                Description = book.Description,
+                Name = nameSurname.Name,
+                Surname = nameSurname.Surname
             };
             return result;
         }

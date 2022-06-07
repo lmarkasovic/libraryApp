@@ -6,7 +6,6 @@ namespace Library.Repository
     {
         IEnumerable<Book> GetAllBooks();
         Book GetBookById(string id);
-        String GetBorrowerDetails(int id);
         Book SaveBook(Book book);
 
     }

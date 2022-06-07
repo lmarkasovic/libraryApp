@@ -12,7 +12,6 @@
         <dt>
             Author
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Author)
         </dd>
@@ -20,7 +19,6 @@
         <dt>
             Title
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Title)
         </dd>
@@ -28,7 +26,6 @@
         <dt>
             Description
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
@@ -36,7 +33,6 @@
         <dt>
             Genre
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Genre)
         </dd>
@@ -44,18 +40,29 @@
         <dt>
             Publish date
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.PublishDate)
         </dd>
-
+ 
         <dt>
             Price
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Price)
         </dd>
+
+@*        @if (model => model.Price != null)
+        {*@
+            <dt>
+                Borrowed by:
+            </dt>
+
+            <dd>
+            @Html.DisplayFor(model => model.Name)
+            <span> </span>
+            @Html.DisplayFor(model => model.Surname)
+            </dd>            
+  @*      } *@
     </dl>
 </div>
 <p>

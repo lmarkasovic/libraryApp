@@ -43,13 +43,24 @@ namespace Library.Repository
 
                 _context.Catalog.Where(a => a.Id == "bk111").FirstOrDefault().BorrowerUserId = 2;
                 _context.Catalog.Where(a => a.Id == "bk108").FirstOrDefault().BorrowerUserId = 2;
-                User user = new User
+
+                List<User> users = new List<User>()
                 {
-                    Id = 2,
-                    Name = "John",
-                    Surname = "Smith"
+                    new User()
+                    {
+                        Id = 1,
+                        Name = "John",
+                        Surname = "Smith"
+                    },
+                    new User()
+                    {
+                        Id = 2,
+                        Name = "Arthur",
+                        Surname = "Morgan"
+                    }
                 };
-                _context.Users.Add(user);
+
+                _context.Users.AddRange(users);
                 _context.SaveChanges();
             }
         }
@@ -69,13 +80,6 @@ namespace Library.Repository
                 books.Add(book);
             }
             return books;
-        }
-
-        public string GetBorrowerDetails(int id)
-        {
-            return _context.Users.Where(a => a.Id == id).Select(x => x.Name).FirstOrDefault() 
-                + ' ' 
-                + _context.Users.Where(a => a.Id == id).Select(x => x.Surname).FirstOrDefault();
         }
 
         public Book GetBookById(string id)

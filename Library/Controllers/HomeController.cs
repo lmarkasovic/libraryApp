@@ -11,10 +11,12 @@ namespace Library.Controllers
     public class HomeController : Controller
     {
         private readonly IBookService _bookService;
+        private readonly IUserService _userService;
 
-        public HomeController(IBookService bookService)
+        public HomeController(IBookService bookService, IUserService userService)
         {
             _bookService = bookService;
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -53,5 +55,9 @@ namespace Library.Controllers
             return View("Details", result);
         }
 
+        public UserViewModel GetCurrentUser(int id)
+        {
+            return _userService.GetUserDetails(id);
+        }
     }
 }
