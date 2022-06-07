@@ -41,7 +41,7 @@
             Publish date
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PublishDate)
+            @Html.DisplayFor(model => model.PublishDate)         
         </dd>
  
         <dt>
@@ -61,7 +61,14 @@
             @Html.DisplayFor(model => model.Name)
             <span> </span>
             @Html.DisplayFor(model => model.Surname)
-            </dd>            
+            </dd>  
+            
+            <dt>
+                Borrowed until:
+            </dt>
+            <dd>
+            @Html.DisplayFor(model => model.BorrowedUntil)         
+            </dd>
   @*      } *@
     </dl>
 </div>

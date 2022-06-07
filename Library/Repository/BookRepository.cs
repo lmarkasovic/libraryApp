@@ -33,7 +33,7 @@ namespace Library.Repository
                         Title = item.Title,
                         Genre = item.Genre,
                         Price = item.Price,
-                        PublishDate = item.PublishDate,
+                        PublishDate = DateTime.Parse(item.PublishDate),
                         Description = item.Description
                     };
 
@@ -42,7 +42,9 @@ namespace Library.Repository
                 }
 
                 _context.Catalog.Where(a => a.Id == "bk111").FirstOrDefault().BorrowerUserId = 2;
+                _context.Catalog.Where(a => a.Id == "bk111").FirstOrDefault().BorrowedUntil = DateTime.Now.AddDays(5);
                 _context.Catalog.Where(a => a.Id == "bk108").FirstOrDefault().BorrowerUserId = 2;
+                _context.Catalog.Where(a => a.Id == "bk108").FirstOrDefault().BorrowedUntil = DateTime.Now.AddDays(7);
 
                 List<User> users = new List<User>()
                 {
@@ -65,7 +67,7 @@ namespace Library.Repository
             }
         }
 
-        public IEnumerable<Book> GetAllBooks()
+        public async Task<IEnumerable<Book>> GetAllBooks()
         {
             var books = new List<Book>();
             foreach (var item in _context.Catalog)
@@ -82,12 +84,12 @@ namespace Library.Repository
             return books;
         }
 
-        public Book GetBookById(string id)
+        public async Task<Book> GetBookById(string id)
         {
             return _context.Catalog.Where(a => a.Id == id).FirstOrDefault();
         }
 
-        public Book SaveBook(Book book)
+        public async Task<Book> SaveBook(Book book)
         {
             _context.Entry(book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.SaveChanges();

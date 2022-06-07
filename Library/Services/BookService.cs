@@ -14,16 +14,16 @@ namespace Library.Services
             _userRepo = userRepo;
         }
 
-        public IEnumerable<BookViewModel> GetBooks()
+        public async Task<IEnumerable<BookViewModel>> GetBooks()
         {
-            var books = _bookRepo.GetAllBooks();
+            var books = await _bookRepo.GetAllBooks();
             var result = new List<BookViewModel>();
             foreach (var b in books)
             {
                 UserViewModel nameSurname = new UserViewModel();
                 if (b.BorrowerUserId != null)
                 {
-                    var userDetails = _userRepo.GetUserDetails(b.BorrowerUserId.Value);
+                    var userDetails = await _userRepo.GetUserDetails(b.BorrowerUserId.Value);
                     nameSurname = new UserViewModel()
                     {
                         Name = userDetails.Name,
@@ -43,28 +43,30 @@ namespace Library.Services
             return result;
         }
 
-        public void BorrowBook(string bookId, int userId)
+        public async Task BorrowBook(string bookId, int userId)
         {
-            var book = _bookRepo.GetBookById(bookId);
-            book.BorrowerUserId = userId;          
+            var book = await _bookRepo.GetBookById(bookId);
+            book.BorrowerUserId = userId;
+            book.BorrowedUntil = DateTime.Now.AddDays(14);
             _bookRepo.SaveBook(book);
         }
 
-        public void ReturnBook(string bookId, int userId)
+        public async Task ReturnBook(string bookId, int userId)
         {
-            var book = _bookRepo.GetBookById(bookId);
+            var book = await _bookRepo.GetBookById(bookId);
             book.BorrowerUserId = null;
+            book.BorrowedUntil = null;
             _bookRepo.SaveBook(book);
         }
 
-        public BookDetailsViewModel GetBookDetails(string bookId)
+        public async Task<BookDetailsViewModel> GetBookDetails(string bookId)
         {
-            var book = _bookRepo.GetBookById(bookId);
+            var book = await _bookRepo.GetBookById(bookId);
 
             UserViewModel nameSurname = new UserViewModel();
             if (book.BorrowerUserId != null)
             {
-                var user = _userRepo.GetUserDetails(book.BorrowerUserId.Value);
+                var user = await _userRepo.GetUserDetails(book.BorrowerUserId.Value);
                 nameSurname = new UserViewModel()
                 {
                     Name = user.Name,
@@ -81,7 +83,8 @@ namespace Library.Services
                 PublishDate = book.PublishDate,
                 Description = book.Description,
                 Name = nameSurname.Name,
-                Surname = nameSurname.Surname
+                Surname = nameSurname.Surname,
+                BorrowedUntil = book.BorrowedUntil
             };
             return result;
         }
