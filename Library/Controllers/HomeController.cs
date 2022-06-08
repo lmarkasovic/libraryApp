@@ -41,7 +41,7 @@ namespace Library.Controllers
                 return BadRequest();
 
             await _bookService.BorrowBook(bookId, userId);
-            return RedirectToAction("Index", new { userId = userId });
+            return RedirectToAction("Index");
         }
 
         //[HttpPut]
@@ -51,7 +51,7 @@ namespace Library.Controllers
                 return BadRequest();
 
             await _bookService.ReturnBook(bookId, userId);
-            return RedirectToAction("Index", new { userId = userId });
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> GetBookDetails(string bookId)

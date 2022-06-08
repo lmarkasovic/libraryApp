@@ -3,7 +3,6 @@ namespace Library.Models.ViewModels
     public class BookViewModel : BookViewModelBaseEntity
     {
         public string Id { get; set; }
-        //public int? BorrowerUserId { get; set; }
         public bool Borrowed { get; set; }
         public bool BorrowedByCurrentUser { get; set; }
         public string? BorrowerNameSurname { get; set; }
@@ -18,7 +17,6 @@ namespace Library.Models.ViewModels
                 Author = book.Author,
                 Title = book.Title,
                 Id = book.Id,
-                //BorrowerUserId = book.BorrowerUserId,
                 Borrowed = borrowed,
                 BorrowedByCurrentUser = borrowedByCurrentUser,
                 BorrowerNameSurname = book.BorrowerNameSurname
