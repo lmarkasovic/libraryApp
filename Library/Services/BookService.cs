@@ -17,27 +17,27 @@ namespace Library.Services
         {
             var books = await _bookRepo.GetAllBooks();
             var result = new List<BookDTO>();
-            foreach (var b in books)
+            foreach (var book in books)
             {
                 UserDTO nameSurname = new UserDTO();
-                if (b.BorrowerUserId != null)
+                if (book.BorrowerUserId != null)
                 {
-                    var userDetails = await _userRepo.GetUserDetails(b.BorrowerUserId.Value);
+                    var userDetails = await _userRepo.GetUserDetails(book.BorrowerUserId.Value);
                     nameSurname = new UserDTO()
                     {
                         Name = userDetails.Name,
                         Surname = userDetails.Surname
                     };
                 }
-                BookDTO book = new BookDTO
+                BookDTO bookMetadata = new BookDTO
                 {
-                    Id = b.Id,
-                    Title = b.Title,
-                    Author = b.Author,
-                    BorrowerUserId = b.BorrowerUserId,
+                    Id = book.Id,
+                    Title = book.Title,
+                    Author = book.Author,
+                    BorrowerUserId = book.BorrowerUserId,
                     BorrowerNameSurname = nameSurname.Name + ' ' + nameSurname.Surname
                 };
-                result.Add(book);
+                result.Add(bookMetadata);
             }
             return result;
         }

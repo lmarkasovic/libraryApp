@@ -17,7 +17,7 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model.Where(a => a.BorrowerUserId == null)) {
+@foreach (var item in Model.Where(a => a.Borrowed == false)) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Author)
@@ -26,18 +26,7 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @if (item.BorrowerUserId == null) 
-            {  
-                @Html.ActionLink("Borrow", "BorrowBook", new { bookId=item.Id, userId=1 }) 
-            }            
-            else if (item.BorrowerUserId == 1) 
-            {  
-                @Html.ActionLink("Return", "ReturnBook", new { bookId=item.Id, userId=1 }) 
-            }
-            else
-            {
-                @Html.DisplayFor(modelItem => item.BorrowerNameSurname)
-            }
+            @Html.ActionLink("Borrow", "BorrowBook", new { bookId=item.Id, userId=1 }) 
             |
             @Html.ActionLink("Details", "GetBookDetails", new { bookId=item.Id })             
         </td>
@@ -64,7 +53,7 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Where(a => a.BorrowerUserId != null && a.BorrowerUserId != 1)) {
+    @foreach (var item in Model.Where(a => a.Borrowed == true && a.BorrowedByCurrentUser == false)) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Author)
@@ -73,19 +62,9 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @if (item.BorrowerUserId == null) 
-            {  
-                @Html.ActionLink("Borrow", "BorrowBook", new { bookId=item.Id, userId=1 }) 
-            }            
-            else if (item.BorrowerUserId == 1) 
-            {  
-                @Html.ActionLink("Return", "ReturnBook", new { bookId=item.Id, userId=1 }) 
-            }
-            else
-            {
-                @Html.DisplayFor(modelItem => item.BorrowerNameSurname)
-            }
-            |
+            @Html.DisplayFor(modelItem => item.BorrowerNameSurname)
+        </td>
+        <td>            
             @Html.ActionLink("Details", "GetBookDetails", new { bookId=item.Id })             
         </td>
     </tr>
@@ -109,7 +88,7 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Where(a => a.BorrowerUserId == 1)) {
+    @foreach (var item in Model.Where(a => a.Borrowed == true && a.BorrowedByCurrentUser == true)) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Author)
@@ -118,18 +97,7 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @if (item.BorrowerUserId == null) 
-            {  
-                @Html.ActionLink("Borrow", "BorrowBook", new { bookId=item.Id, userId=1 }) 
-            }            
-            else if (item.BorrowerUserId == 1) 
-            {  
-                @Html.ActionLink("Return", "ReturnBook", new { bookId=item.Id, userId=1 }) 
-            }
-            else
-            {
-                @Html.DisplayFor(modelItem => item.BorrowerNameSurname)
-            }
+            @Html.ActionLink("Return", "ReturnBook", new { bookId=item.Id, userId=1 }) 
             |
             @Html.ActionLink("Details", "GetBookDetails", new { bookId=item.Id })             
         </td>

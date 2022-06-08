@@ -1,4 +1,4 @@
-﻿using Library.Models;
+﻿using Library.Models.Entity;
 using System.Xml.Linq;
 
 namespace Library.DAL
@@ -43,6 +43,8 @@ namespace Library.DAL
             dbContext.Catalog.Where(a => a.Id == "bk111").FirstOrDefault().BorrowedUntil = DateTime.Now.AddDays(5);
             dbContext.Catalog.Where(a => a.Id == "bk108").FirstOrDefault().BorrowerUserId = 2;
             dbContext.Catalog.Where(a => a.Id == "bk108").FirstOrDefault().BorrowedUntil = DateTime.Now.AddDays(7);
+            dbContext.Catalog.Where(a => a.Id == "bk107").FirstOrDefault().BorrowerUserId = 3;
+            dbContext.Catalog.Where(a => a.Id == "bk107").FirstOrDefault().BorrowedUntil = DateTime.Now.AddDays(3);
 
             List<User> users = new List<User>()
                 {
@@ -57,6 +59,12 @@ namespace Library.DAL
                         Id = 2,
                         Name = "Arthur",
                         Surname = "Morgan"
+                    },
+                    new User()
+                    {
+                        Id = 3,
+                        Name = "Jack",
+                        Surname = "Marston"
                     }
                 };
 

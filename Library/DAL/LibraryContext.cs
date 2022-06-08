@@ -1,4 +1,4 @@
-﻿using Library.Models;
+﻿using Library.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.DAL

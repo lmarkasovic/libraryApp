@@ -1,6 +1,5 @@
 ﻿using Library.DAL;
-using Library.Models;
-using System.Xml.Linq;
+using Library.Models.Entity;
 
 namespace Library.Repository
 {
@@ -38,7 +37,7 @@ namespace Library.Repository
         public async Task<Book> SaveBook(Book book)
         {
             _context.Entry(book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return book;
         }
     }

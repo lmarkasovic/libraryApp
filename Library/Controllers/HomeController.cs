@@ -1,5 +1,4 @@
-﻿using Library.Models;
-using Library.Models.ViewModels;
+﻿using Library.Models.ViewModels;
 using Library.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -19,8 +18,14 @@ namespace Library.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            var books = await _bookService.GetBooks();            
-            return View(books.Select(BookViewModel.FromDTO).ToList());
+            var userId = 1; //hardcoded for show purposes
+            var books = await _bookService.GetBooks();
+            var result = new List<BookViewModel>();
+            foreach (var book in books)
+            {
+                result.Add(BookViewModel.FromDTO(book, userId));
+            };
+            return View(result);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -36,16 +41,17 @@ namespace Library.Controllers
                 return BadRequest();
 
             await _bookService.BorrowBook(bookId, userId);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { userId = userId });
         }
 
+        //[HttpPut]
         public async Task<IActionResult> ReturnBook(string bookId, int userId)
         {
             if (bookId == null)
                 return BadRequest();
 
             await _bookService.ReturnBook(bookId, userId);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { userId = userId });
         }
 
         public async Task<IActionResult> GetBookDetails(string bookId)

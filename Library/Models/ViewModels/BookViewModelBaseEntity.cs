@@ -1,4 +1,3 @@
-
 namespace Library.Models.ViewModels
 {
     public abstract class BookViewModelBaseEntity
