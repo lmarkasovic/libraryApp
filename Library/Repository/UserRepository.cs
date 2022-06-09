@@ -14,13 +14,14 @@ namespace Library.Repository
 
         public async Task<User> GetUserDetails(int id)
         {
-            var user = new User()
+            var user = await _context.Users.FindAsync(id);
+            var result = new User()
             {
-                Name = _context.Users.Where(a => a.Id == id).Select(x => x.Name).FirstOrDefault(),
-                Surname = _context.Users.Where(a => a.Id == id).Select(x => x.Surname).FirstOrDefault()
+                Name = user.Name,
+                Surname = user.Surname,
             };
 
-            return user;
+            return result;
         }
     }
 }

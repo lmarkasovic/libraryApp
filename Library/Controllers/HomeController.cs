@@ -19,13 +19,8 @@ namespace Library.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             var userId = 1; //hardcoded for show purposes
-            var books = await _bookService.GetBooks();
-            var result = new List<BookViewModel>();
-            foreach (var book in books)
-            {
-                result.Add(BookViewModel.FromDTO(book, userId));
-            };
-            return View(result);
+            var books = await _bookService.GetBooks(userId);
+            return View(books.Select(BookViewModel.FromDTO).ToList());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

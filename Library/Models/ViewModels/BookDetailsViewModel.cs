@@ -1,9 +1,8 @@
-
 using System.ComponentModel.DataAnnotations;
 
 namespace Library.Models.ViewModels
 {
-    public class BookDetailsViewModel: BookViewModelBaseEntity
+    public sealed class BookDetailsViewModel: BookViewModelBaseEntity
     {
         public string Genre { get; set; }
         public string Price { get; set; }

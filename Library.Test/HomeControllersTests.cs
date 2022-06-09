@@ -17,9 +17,9 @@ namespace Library.Test
             mockBookService = new Mock<IBookService>();
             mockUserService = new Mock<IUserService>();
 
-            mockBookService.Setup(service => service.GetBooks()).ReturnsAsync(TestData.GetTestCatalog());
-            mockBookService.Setup(service => service.GetBookDetails(It.IsAny<string>())).ReturnsAsync(TestData.GetTestBookDetails());
-            mockUserService.Setup(service => service.GetUserDetails(It.IsAny<int>())).ReturnsAsync(TestData.GetTestUsers());
+            mockBookService.Setup(service => service.GetBooks(It.IsAny<int>())).ReturnsAsync(TestData.GetTestCatalogDTO());
+            mockBookService.Setup(service => service.GetBookDetails(It.IsAny<string>())).ReturnsAsync(TestData.GetTestBookDetailsDTO());
+            mockUserService.Setup(service => service.GetUserDetails(It.IsAny<int>())).ReturnsAsync(TestData.GetTestUsersDTO());
 
         }
 
@@ -94,8 +94,5 @@ namespace Library.Test
             var model = Assert.IsAssignableFrom<BookDetailsViewModel>(viewResult.Model);
             Assert.NotNull(model.Author);
         }
-
-        //TODO borrow i return book assert redirect
-
     }
 }

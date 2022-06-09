@@ -1,6 +1,6 @@
 namespace Library.Models.Entity
 {
-    public class Book
+    public sealed class Book
     {
         public string Id { get; set; }
         public string Author { get; set; }

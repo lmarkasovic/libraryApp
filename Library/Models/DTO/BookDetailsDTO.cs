@@ -1,6 +1,6 @@
 namespace Library.Models.DTO
 {
-    public class BookDetailsDTO: BookDTOBase
+    public sealed class BookDetailsDTO: BookDTOBase
     {
         public string Genre { get; set; }
         public string Price { get; set; }

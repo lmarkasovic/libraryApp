@@ -13,12 +13,16 @@ namespace Library.Services
             _userRepo = userRepo;
         }
 
-        public async Task<IEnumerable<BookDTO>> GetBooks()
+        public async Task<IEnumerable<BookDTO>> GetBooks(int userId)
         {
             var books = await _bookRepo.GetAllBooks();
             var result = new List<BookDTO>();
             foreach (var book in books)
             {
+                var borrowed = false;
+                var borrowedByCurrentUser = false;
+                if (book.BorrowerUserId != null) borrowed = true;
+                if (book.BorrowerUserId == userId) borrowedByCurrentUser = true;
                 UserDTO nameSurname = new UserDTO();
                 if (book.BorrowerUserId != null)
                 {
@@ -34,6 +38,8 @@ namespace Library.Services
                     Id = book.Id,
                     Title = book.Title,
                     Author = book.Author,
+                    Borrowed = borrowed,
+                    BorrowedByCurrentUser = borrowedByCurrentUser,
                     BorrowerUserId = book.BorrowerUserId,
                     BorrowerNameSurname = nameSurname.Name + ' ' + nameSurname.Surname
                 };
@@ -45,6 +51,7 @@ namespace Library.Services
         public async Task BorrowBook(string bookId, int userId)
         {
             var book = await _bookRepo.GetBookById(bookId);
+            if (book.BorrowerUserId != null) throw new InvalidOperationException("Book already borrowed");
             book.BorrowerUserId = userId;
             book.BorrowedUntil = DateTime.Now.AddDays(14);
             await _bookRepo.SaveBook(book);
@@ -53,6 +60,7 @@ namespace Library.Services
         public async Task ReturnBook(string bookId, int userId)
         {
             var book = await _bookRepo.GetBookById(bookId);
+            if (book.BorrowerUserId != userId) throw new InvalidOperationException("Book not borrowed by current User");
             book.BorrowerUserId = null;
             book.BorrowedUntil = null;
             await _bookRepo.SaveBook(book);

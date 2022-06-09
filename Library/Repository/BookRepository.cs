@@ -31,7 +31,7 @@ namespace Library.Repository
 
         public async Task<Book> GetBookById(string id)
         {
-            return _context.Catalog.Where(a => a.Id == id).FirstOrDefault();
+            return await _context.Catalog.FindAsync(id);
         }
 
         public async Task<Book> SaveBook(Book book)
