@@ -74,7 +74,7 @@ namespace Library.Test
             Task act() => _fixture.service.BorrowBook("1", 5);
 
             // Assert
-            Assert.ThrowsAsync<InvalidOperationException>(act);
+            await Assert.ThrowsAsync<InvalidOperationException>(act);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace Library.Test
             Task act() => _fixture.service.ReturnBook("1", 5);
 
             // Assert
-            Assert.ThrowsAsync<InvalidOperationException>(act);
+            await Assert.ThrowsAsync<InvalidOperationException>(act);
         }
 
     }

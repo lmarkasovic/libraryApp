@@ -29,20 +29,18 @@ namespace Library.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //[HttpPut]
         public async Task<IActionResult> BorrowBook(string bookId, int userId)
         {
-            if (bookId == null)
+            if (bookId == string.Empty)
                 return BadRequest();
 
             await _bookService.BorrowBook(bookId, userId);
             return RedirectToAction("Index");
         }
 
-        //[HttpPut]
         public async Task<IActionResult> ReturnBook(string bookId, int userId)
         {
-            if (bookId == null)
+            if (bookId == string.Empty)
                 return BadRequest();
 
             await _bookService.ReturnBook(bookId, userId);

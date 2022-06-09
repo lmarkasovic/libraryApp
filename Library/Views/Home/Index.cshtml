@@ -26,7 +26,7 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.ActionLink("Borrow", "BorrowBook", new { bookId=item.Id, userId=1 }) 
+            @Html.ActionLink("Borrow", "BorrowBook", new { bookId=item.Id, userId=1 })
             |
             @Html.ActionLink("Details", "GetBookDetails", new { bookId=item.Id })             
         </td>
