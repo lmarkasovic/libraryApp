@@ -1,4 +1,19 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿var getCellValue = function (tr, idx) { return tr.children[idx].innerText || tr.children[idx].textContent; }
 
-// Write your JavaScript code.
+var comparer = function (idx, asc) {
+    return function (a, b) {
+        return function (v1, v2) {
+            return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2);
+        }(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+    }
+};
+
+Array.prototype.slice.call(document.querySelectorAll('th')).forEach(function (th) {
+    th.addEventListener('click', function () {
+        var table = th.parentNode
+        while (table.tagName.toUpperCase() != 'TABLE') table = table.parentNode;
+        Array.prototype.slice.call(table.querySelectorAll('tr:nth-child(n+2)'))
+            .sort(comparer(Array.prototype.slice.call(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+            .forEach(function (tr) { table.appendChild(tr) });
+    })
+});

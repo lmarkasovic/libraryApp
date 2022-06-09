@@ -7,17 +7,18 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Library.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <div class="container-fluid" id="header">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color: white">Home</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <span>Current user:</span>
+                <span style="color: white">Current user:</span>
                 <span> </span>
             </div>
         </nav>
@@ -29,8 +30,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022
+        <div class="container" style="display: flex; justify-content: flex-end">
+            Luka Markasović &copy; 2022
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
