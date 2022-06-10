@@ -18,7 +18,7 @@ namespace Library.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            var userId = 1; //hardcoded for show purposes
+            var userId = 1; //hardcoded for show purposes TODO userManager/signInManager
             var books = await _bookService.GetBooks(userId);
             return View(books.Select(BookViewModel.FromDTO).ToList());
         }
@@ -29,21 +29,21 @@ namespace Library.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<IActionResult> BorrowBook(string bookId, int userId)
+        public async Task<IActionResult> BorrowBook(string bookId, int? userId)
         {
-            if (bookId == string.Empty)
+            if (bookId == null || userId == null)
                 return BadRequest();
 
-            await _bookService.BorrowBook(bookId, userId);
+            await _bookService.BorrowBook(bookId, userId.Value);
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> ReturnBook(string bookId, int userId)
+        public async Task<IActionResult> ReturnBook(string bookId, int? userId)
         {
-            if (bookId == string.Empty)
+            if (bookId == null || userId == null)
                 return BadRequest();
 
-            await _bookService.ReturnBook(bookId, userId);
+            await _bookService.ReturnBook(bookId, userId.Value);
             return RedirectToAction("Index");
         }
 

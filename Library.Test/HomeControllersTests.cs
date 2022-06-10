@@ -61,7 +61,7 @@ namespace Library.Test
             _fixture.controller = new HomeController(_fixture.mockBookService.Object, _fixture.mockUserService.Object);
 
             // Act
-            var result = await _fixture.controller.BorrowBook(string.Empty, 1);
+            var result = await _fixture.controller.BorrowBook(null, 1);
 
             // Assert
             Assert.IsType<BadRequestResult>(result);
@@ -74,7 +74,7 @@ namespace Library.Test
             _fixture.controller = new HomeController(_fixture.mockBookService.Object, _fixture.mockUserService.Object);
 
             // Act
-            var result = await _fixture.controller.ReturnBook(string.Empty, 1);
+            var result = await _fixture.controller.ReturnBook(null, 1);
 
             // Assert
             Assert.IsType<BadRequestResult>(result);
